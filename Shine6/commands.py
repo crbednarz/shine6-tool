@@ -62,7 +62,7 @@ def set_flash_mode(mode):
     # Honestly not too sure what this address command is actually doing.
     # It seems to be important to settings up the flashing process.
     if mode == FlashMode.Firmware:
-        address_command = Packet([0x1d, 0xd0], delay=0.1)
+        address_command = Packet([0x1d, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xd0], delay=0.1)
     elif mode == FlashMode.Version:
         address_command = Packet([0x1d, 0x01, 0x04, 0x28, 0x70], delay=0.1)
     else:
@@ -106,7 +106,7 @@ def flash_data(data):
 def read_address(address):
     # Requires patched firmware to read use.
     return [
-        Packet(pack(0x12, 0x20, 0x00, 0x00, address))
+        Packet(pack("<BBBBI", 0x12, 0x20, 0x00, 0x00, address))
     ]
 
 
