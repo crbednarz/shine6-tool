@@ -15,7 +15,7 @@ VERSION_DATA = [
 
 
 @click.command()
-@click.option('--input', '-i', default='US Layout V1.02.10.dat', help='Path to US V1.02.10.dat firmware file.')
+@click.option('--input', '-i', help='Path to US v1.02.10 firmware file.')
 @click.option('--skip-setup', '-s', is_flag=True, help="Skips setting the keyboard to flash mode. Useful if you've made a mistake and need to try again.")
 def main(input, skip_setup):
     print("Preparing flash data...")

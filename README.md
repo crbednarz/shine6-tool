@@ -28,6 +28,13 @@ Flashes specified firmware to keyboard. This has not been thoroughly tested, so 
 python flash.py -i "temp/US Layout V1.02.10.dat"
 ```
 
+### patch.py
+Patches US v1.02.10 firmware to allow for generic reading of memory.
+
+**Usage**
+```
+python patch.py -i "temp/US Layout V1.02.10.dat" -o "temp/patched.dat"
+```
 
 ## Special Thanks
 A huge thanks to all the work done on [pok3r_re_firmware](https://github.com/pok3r-custom/pok3r_re_firmware). It was often enough to get me going in the right direction.
