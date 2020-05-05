@@ -17,7 +17,15 @@ The output directory will be populated with a firmware binary for each layout.
 
 **Usage**
 ```
-python extract.py -i path/to/FWUpdate.exe -o output/dir
+python extract.py -i FWUpdate.exe -o temp/
+```
+
+### flash.py
+Flashes specified firmware to keyboard. This has not been thoroughly tested, so use at your own risk!
+
+**Usage**
+```
+python flash.py -i "temp/US Layout V1.02.10.dat"
 ```
 
 

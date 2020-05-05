@@ -98,7 +98,7 @@ def chunks(lst, n):
 
 def flash_data(data):
     return [
-        Packet([0x1f, len(chunk), 0x00, 0x00] + chunk)
+        Packet([0x1f, len(chunk), 0x00, 0x00] + list(chunk))
         for chunk in chunks(data, 0x34)
     ]
 
