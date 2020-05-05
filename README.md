@@ -10,3 +10,6 @@ If you get into trouble, try installing their Software and running `FWUpdate.exe
 ## Utilities
 ### custom_rgb_test.py
 Basic test of having the host system control the lighting of each key to create a smooth realtime effect.
+
+## License
+License information can be found in the LICENSE file in the root directory.
