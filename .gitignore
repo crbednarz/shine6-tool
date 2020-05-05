@@ -44,3 +44,4 @@ nodeLanguageServer/**
 nodeLanguageServer.*/**
 venv/
 .vscode/
+temp/

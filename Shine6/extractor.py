@@ -32,7 +32,7 @@ V1_02_10_XOR_KEY = [
     0xEAC091C5]
 
 
-def xor52BitApply(data, xorKey):
+def xor_52_bit_apply(data, xorKey):
     for i in range(0, len(data), 4):
         (unpackedValue, ) = unpack_from("<I", data, i)
         unpackedValue ^= xorKey[(i // 4) % 13]
@@ -40,7 +40,7 @@ def xor52BitApply(data, xorKey):
 
 
 
-def shuffleDecrypt(data):
+def shuffle_decrypt(data):
     # As a base-line encryption, bytes and then bits are shuffled.
     # Presumably to stop people from finding the firmware without reverse engineering the code.
 
@@ -86,17 +86,17 @@ class UpdaterReader:
         self._metadataTagSeparation = 80
         self._metadataTagCount = 9
         self._firmwares = {}
-        self._parseFile()
+        self._parse_file()
 
     
-    def _parseFile(self):
+    def _parse_file(self):
         metadataStart = len(self._fileData) - self._metadataOffsetFromEoF
 
         self._metadata = bytearray(self._fileData[metadataStart : metadataStart + self._metadataSize])
-        shuffleDecrypt(self._metadata)
-        self._findFirmwares()
+        shuffle_decrypt(self._metadata)
+        self._find_firmwares()
 
-    def _findFirmwares(self):
+    def _find_firmwares(self):
         # The metdata section of FWUpdate.exe is actually a series of tags/values.
 
         fileIndex = len(self._fileData) - self._metadataOffsetFromEoF
@@ -113,7 +113,7 @@ class UpdaterReader:
 
             if versionLength != 0:
                 versionBuffer = bytearray(self._fileData[fileIndex : fileIndex + versionLength])
-                shuffleDecrypt(versionBuffer)
+                shuffle_decrypt(versionBuffer)
                 version = versionBuffer.decode("utf-16")
 
                 # Version and name are null terminated utf-16 strings. So we need to clip off the end
@@ -124,17 +124,17 @@ class UpdaterReader:
 
             if dataLength != 0:
                 valueBuffer = bytearray(self._fileData[fileIndex : fileIndex + dataLength])
-                shuffleDecrypt(valueBuffer)
-                xor52BitApply(valueBuffer, self._xorKey)
+                shuffle_decrypt(valueBuffer)
+                xor_52_bit_apply(valueBuffer, self._xorKey)
                 data = valueBuffer
 
             metadataIndex -= self._metadataTagSeparation
 
             if versionLength != 0:
-                self._firmwares["%s %s" % (name, version)] = data
+                self._firmwares[f"{name} {version}"] = data
             
 
-    def saveFirmwares(self, prefix):
+    def save_firmwares(self, path):
         for key, value in self._firmwares.items():
-            with open("%s %s.dat" % (prefix, key), 'wb') as fileHandle:
-                fileHandle.write(value)
+            with open(f"{path}/{key}.dat", 'wb') as file:
+                file.write(value)
