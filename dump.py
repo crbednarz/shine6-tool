@@ -1,26 +1,34 @@
 import click
 import time
 from Shine6 import commands as cmd
-from Shine6.keyboard import Keyboard
-
-
-def capture_bytes(data):
-    print(f"Raw data: {data}")
+from Shine6.keyboard import open_keyboard
 
 
 @click.command()
-def main():
+@click.option('--output-file', '-o', help='Output file for flash dump.')
+def main(output_file):
     """Dumps all memory from keyboard."""
-    keyboard = Keyboard(callback=capture_bytes)
-    keyboard.send_packets(cmd.lock_settings())
-    packets = []
-    for address in range(0x100, 0xb000, 0x34):
-        packets += cmd.read_address(address)
-    keyboard.send_packets(packets)
+    is_capturing = False
+    dump = []
+    def capture_bytes(data):
+        if is_capturing:
+            dump.extend(data[5:5+0x3c])
 
-    keyboard.send_packets(cmd.unlock_settings())
-    time.sleep(1)
-    keyboard.close()
+    with open_keyboard(callback=capture_bytes) as keyboard:
+        keyboard.send_packets(cmd.lock_settings())
+        packets = []
+        for address in range(0x00, 0xa428, 0x3c):
+            packets += cmd.read_address(address)
+        is_capturing = True
+        keyboard.send_packets(packets)
+        is_capturing = False
+
+        keyboard.send_packets(cmd.unlock_settings())
+        time.sleep(1)
+
+
+    with open(output_file, 'wb') as file:
+        file.write(bytearray(dump[:0xa428]))
 
 if __name__ == '__main__':
     main()

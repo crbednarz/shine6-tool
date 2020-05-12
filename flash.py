@@ -3,7 +3,7 @@ import time
 from Shine6 import commands as cmd
 from Shine6.commands import BootMode, FlashMode
 from Shine6.extractor import xor_52_bit_apply, V1_02_10_XOR_KEY
-from Shine6.keyboard import Keyboard
+from Shine6.keyboard import open_keyboard
 
 
 VERSION_DATA = [
@@ -26,31 +26,29 @@ def main(input, skip_setup):
 
     if not skip_setup:
         print("Putting keyboard into flash mode...")
-        keyboard = Keyboard()
-        keyboard.send_packets(cmd.boot_into(BootMode.Flashing))
-        time.sleep(1)
-        keyboard.close()
+        with open_keyboard() as keyboard:
+            keyboard.send_packets(cmd.boot_into(BootMode.Flashing))
+            time.sleep(1)
+        
         time.sleep(4)
 
     print("Writing...")
-    keyboard = Keyboard(True)
-    keyboard.send_packets(
-        cmd.set_flash_mode(FlashMode.Firmware) +
-        cmd.flash_data(contents) +
-        cmd.set_flash_mode(FlashMode.Version) +
-        cmd.flash_data(VERSION_DATA) +
-        cmd.boot_into(BootMode.Normal)
-    )
-    time.sleep(1)
-    keyboard.close()
+    with open_keyboard(True) as keyboard:
+        keyboard.send_packets(
+            cmd.set_flash_mode(FlashMode.Firmware) +
+            cmd.flash_data(contents) +
+            cmd.set_flash_mode(FlashMode.Version) +
+            cmd.flash_data(VERSION_DATA) +
+            cmd.boot_into(BootMode.Normal)
+        )
+        time.sleep(1)
     
     print("Restoring to normal usage...")
     time.sleep(4)
 
-    keyboard = Keyboard()
-    keyboard.send_packets(cmd.finalize_flashing())
-    time.sleep(1)
-    keyboard.close()
+    with open_keyboard() as keyboard:
+        keyboard.send_packets(cmd.finalize_flashing())
+        time.sleep(1)
 
     print("Flashing complete!")
 

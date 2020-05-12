@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from pywinusb import hid
 from time import sleep
 
@@ -11,18 +12,29 @@ KeyLayout = [
     91, 90, 92, -1, -1, -1, 93, -1, -1, -1, 94, 95, 60, 54, 63, 62, 70, -1, 71, 87, -1]
 
 
+@contextmanager
+def open_keyboard(flash_mode=False, callback=None):
+    keyboard = Keyboard(flash_mode, callback)
+    try:
+        keyboard.connect()
+        yield keyboard
+    finally:
+        keyboard.close()
+
 class Keyboard:
     def __init__(self, flash_mode=False, callback=None):
-        keyboard = Keyboard._findDevice(flash_mode)
-        keyboardIn = keyboard.find_input_reports()
-        keyboardOut = keyboard.find_output_reports()
+        self._flash_mode = flash_mode
+        self._callback = callback
 
-        self._device = keyboard
+    def connect(self):
+        self._device = Keyboard._findDevice(self._flash_mode)
+        keyboardIn = self._device.find_input_reports()
+        keyboardOut = self._device.find_output_reports()
+
         self._input = keyboardIn[0]
         self._output = keyboardOut[0]
-        self.callback = None
-        if callback:    
-            keyboard.set_raw_data_handler(callback)
+        if self._callback:    
+            self._device.set_raw_data_handler(self._callback)
 
     @staticmethod
     def _findDevice(flash_mode):
@@ -43,4 +55,5 @@ class Keyboard:
         sleep(packet.delay)
 
     def close(self):
-        self._device.close()
+        if self._device:
+            self._device.close()
