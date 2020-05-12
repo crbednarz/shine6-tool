@@ -21,7 +21,7 @@ class BootMode(Enum):
     Normal = 0x01
 
 class Packet:
-    def __init__(self, data, delay=0.01):
+    def __init__(self, data, delay=0.02):
         self.data = bytearray(64)
         self.data[0:len(data)] = data
         self.delay = delay
