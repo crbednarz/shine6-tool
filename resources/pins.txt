@@ -1,0 +1,124 @@
+// Leaving this here in case anyone comes along and works on a QMK port before me.
+// This is the pins used for each key, dipswitch, and PWM controller.
+// D<num> = Dip Switch
+
+Key	Row	Column
+-	PA0	PA5
+p	PA0	PA6
+[	PA0	PA7
+;	PA0	PC11
+'	PA0	PC13
+/	PA0	PC14
+Right Shift	PA0	PC15
+0	PA0	PC9
+F5	PA10	PA5
+F6	PA10	PA6
+Pause/Break	PA10	PA7
+Vol Up	PA10	PC11
+Vol Down	PA10	PC13
+Calc	PA10	PC14
+Mute	PA10	PC15
+F4	PA10	PC9
+9	PA11	PA5
+i	PA11	PA6
+o	PA11	PA7
+k	PA11	PC11
+l	PA11	PC13
+,	PA11	PC14
+.	PA11	PC15
+8	PA11	PC9
+Backspace	PA1	PA5
+]	PA1	PA6
+\	PA1	PA7
+Enter	PA1	PC11
+Right Ctrl	PA1	PC14
+ =	PA1	PC9
+Home	PA2	PA5
+Delete	PA2	PA6
+End	PA2	PA7
+Right Fn	PA2	PC11
+Up	PA2	PC13
+Down	PA2	PC14
+Left	PA2	PC15
+Insert	PA2	PC9
+Page Down	PA3	PA6
+F10	PA3	PA7
+F11	PA3	PC11
+F12	PA3	PC13
+Right	PA3	PC14
+Num 0	PA3	PC15
+Page Up	PA3	PC9
+Num /	PA4	PA5
+Num 7	PA4	PA6
+Num 8	PA4	PA7
+Num 4	PA4	PC11
+Num 5	PA4	PC13
+Num 1	PA4	PC14
+Num 2	PA4	PC15
+Num Lock	PA4	PC9
+D2	PA8	PA5
+D3	PA8	PA6
+D4	PA8	PA7
+D1	PA8	PC9
+5	PB0	PA5
+r	PB0	PA6
+t	PB0	PA7
+f	PB0	PC11
+g	PB0	PC13
+v	PB0	PC14
+b	PB0	PC15
+4	PB0	PC9
+7	PB11	PA5
+y	PB11	PA6
+u	PB11	PA7
+h	PB11	PC11
+j	PB11	PC13
+n	PB11	PC14
+m	PB11	PC15
+6	PB11	PC9
+F8	PB1	PA5
+F9	PB1	PA6
+F7	PB1	PC9
+3	PB6	PA5
+w	PB6	PA6
+e	PB6	PA7
+s	PB6	PC11
+d	PB6	PC13
+x	PB6	PC14
+c	PB6	PC15
+2	PB6	PC9
+Num -	PC10	PA5
+Num 9	PC10	PA6
+Num +	PC10	PA7
+Num 6	PC10	PC11
+Num Enter	PC10	PC13
+Num 3	PC10	PC14
+Num .	PC10	PC15
+Num *	PC10	PC9
+Left Win	PC12	PA6
+Left Ctrl	PC12	PA7
+Left Alt	PC12	PC11
+Space	PC12	PC13
+Right Alt	PC12	PC14
+Right Win	PC12	PC15
+F1	PC3	PA5
+F2	PC3	PA6
+F3	PC3	PA7
+Print Screen	PC3	PC14
+Scroll Lock	PC3	PC15
+Esc	PC3	PC9
+1	PC4	PA5
+Tab	PC4	PA6
+q	PC4	PA7
+Caps lock	PC4	PC11
+a	PC4	PC13
+Left Shift	PC4	PC14
+Z	PC4	PC15
+grave	PC4	PC9
+		
+		
+// MBI5042GP pins (PWM controller)
+DCLK	PA15	
+LE	PA14	
+GCLK	PC0	
+SDI	PC2	Note that this chains into the other PWM controllers. (Left -> Right -> Middle)
